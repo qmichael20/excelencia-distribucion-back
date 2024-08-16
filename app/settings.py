@@ -1,7 +1,7 @@
+import os
 import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "authentication",
+    "drf_yasg",
     "corsheaders",
 ]
 

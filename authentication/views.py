@@ -2,11 +2,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from authentication.serializers import UserSerializer, CustomTokenObtainPairSerializer
 from rest_framework import permissions
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import serializers
 
 
 def general_response(status, success, message, token=None, data=None):
@@ -55,6 +56,29 @@ def success_response(token, data):
     )
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField()
+
+
+class TokenSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+
+
+class ResponseApi(serializers.Serializer):
+    message = serializers.CharField()
+    statusCode = serializers.IntegerField()
+    token = TokenSerializer()
+    data = serializers.JSONField()
+
+
+@swagger_auto_schema(
+    method="post",
+    tags=["Autenticación"],
+    responses={200: ResponseApi},
+    request_body=LoginSerializer,
+)
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def login(request):
@@ -72,6 +96,12 @@ def login(request):
     return success_response(token, user_serializer.data)
 
 
+@swagger_auto_schema(
+    method="post",
+    tags=["Autenticación"],
+    responses={200: ResponseApi},
+    request_body=UserSerializer,
+)
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def signup(request):
@@ -92,16 +122,22 @@ def signup(request):
     )
 
 
+@swagger_auto_schema(
+    method="get",
+    tags=["Autenticación"],
+    responses={200: ResponseApi},
+    security=[{"Bearer": []}],
+)
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def test_token(request):
     user = request.user
     token = CustomTokenObtainPairSerializer.get_token(user)
     user_serializer = UserSerializer(instance=user)
-
     return success_response(token, user_serializer.data)
 
 
+@swagger_auto_schema(method="post", tags=["Autenticación"])
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def refresh_token(request):
