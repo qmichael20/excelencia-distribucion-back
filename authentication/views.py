@@ -9,47 +9,87 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
-@api_view(["POST"])
-@permission_classes([permissions.AllowAny])
-def login(request):
-    user = get_object_or_404(User, username=request.data["username"])
+def general_response(status, success, message, token=None, data=None):
+    response_data = {
+        "statusCode": status,
+        "success": success,
+        "message": message,
+    }
 
-    if not user.check_password(request.data["password"]):
-        return Response(
-            {"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED
-        )
-
-    token = CustomTokenObtainPairSerializer.get_token(user)
-    user_serializer = UserSerializer(instance=user)
-
-    return Response(
-        {
+    if token:
+        response_data["token"] = {
             "refresh": str(token),
             "access": str(token.access_token),
-            "user": user_serializer.data,
         }
+
+    if data is not None:
+        response_data["data"] = data
+
+    return Response(response_data, status=status)
+
+
+def invalid_credentials_response():
+    return Response(
+        {
+            "statusCode": status.HTTP_401_UNAUTHORIZED,
+            "success": False,
+            "message": "Las credenciales proporcionadas son invalidas.",
+        },
+        status=status.HTTP_401_UNAUTHORIZED,
+    )
+
+
+def success_response(token, data):
+    return Response(
+        {
+            "statusCode": status.HTTP_200_OK,
+            "success": True,
+            "message": "Operacion exitosa",
+            "token": {
+                "refresh": str(token),
+                "access": str(token.access_token),
+            },
+            "data": data,
+        },
+        status=status.HTTP_200_OK,
     )
 
 
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
+def login(request):
+    user = User.objects.filter(email=request.data["email"]).first()
+
+    if not user:
+        return invalid_credentials_response()
+
+    if not user.check_password(request.data["password"]):
+        return invalid_credentials_response()
+
+    token = CustomTokenObtainPairSerializer.get_token(user)
+    user_serializer = UserSerializer(instance=user)
+
+    return success_response(token, user_serializer.data)
+
+
+@api_view(["POST"])
+@permission_classes([permissions.AllowAny])
 def signup(request):
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
+    user_serializer = UserSerializer(data=request.data)
+    if user_serializer.is_valid():
+        user = user_serializer.save()
         user.set_password(request.data["password"])
         user.save()
-
         token = CustomTokenObtainPairSerializer.get_token(user)
+        return success_response(token, user_serializer.data)
 
-        return Response(
-            {
-                "refresh": str(token),
-                "access": str(token.access_token),
-                "user": serializer.data,
-            }
-        )
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return general_response(
+        status.HTTP_400_BAD_REQUEST,
+        False,
+        "Operacion fallida",
+        None,
+        user_serializer.errors,
+    )
 
 
 @api_view(["GET"])
@@ -58,13 +98,8 @@ def test_token(request):
     user = request.user
     token = CustomTokenObtainPairSerializer.get_token(user)
     user_serializer = UserSerializer(instance=user)
-    return Response(
-        {
-            "refresh": str(token),
-            "access": str(token.access_token),
-            "user": user_serializer.data,
-        }
-    )
+
+    return success_response(token, user_serializer.data)
 
 
 @api_view(["POST"])
@@ -73,8 +108,8 @@ def refresh_token(request):
     refresh_token = request.data.get("refresh")
 
     if not refresh_token:
-        return Response(
-            {"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Refresh token es requerido."
         )
 
     try:
@@ -83,14 +118,15 @@ def refresh_token(request):
         user = User.objects.get(id=user_id)
         token = CustomTokenObtainPairSerializer.get_token(user)
         user_serializer = UserSerializer(instance=user)
-        return Response(
-            {
-                "refresh": str(token),
-                "access": str(token.access_token),
-                "user": user_serializer.data,
-            }
+        return success_response(token, user_serializer.data)
+
+    except (InvalidToken, TokenError):
+        return general_response(
+            status.HTTP_401_UNAUTHORIZED,
+            False,
+            "El refresh token proporcionado es invalido.",
         )
-    except (InvalidToken, TokenError) as e:
-        return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
     except User.DoesNotExist:
-        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        return general_response(
+            status.HTTP_404_NOT_FOUND, False, "Usuario no encontrado."
+        )
