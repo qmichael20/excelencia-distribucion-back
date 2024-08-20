@@ -110,6 +110,13 @@ SIMPLE_JWT = {
 }
 
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"},
+    }
+}
+
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]

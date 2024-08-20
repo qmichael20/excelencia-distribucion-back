@@ -1,82 +1,28 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-from authentication.serializers import UserSerializer, CustomTokenObtainPairSerializer
+from authentication.serializers import (
+    LoginSerializer,
+    ResponseApiSerializer,
+    UserSerializer,
+    CustomTokenObtainPairSerializer,
+)
 from rest_framework import permissions
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import serializers
-
-
-def general_response(status, success, message, token=None, data=None):
-    response_data = {
-        "statusCode": status,
-        "success": success,
-        "message": message,
-    }
-
-    if token:
-        response_data["token"] = {
-            "refresh": str(token),
-            "access": str(token.access_token),
-        }
-
-    if data is not None:
-        response_data["data"] = data
-
-    return Response(response_data, status=status)
-
-
-def invalid_credentials_response():
-    return Response(
-        {
-            "statusCode": status.HTTP_401_UNAUTHORIZED,
-            "success": False,
-            "message": "Las credenciales proporcionadas son invalidas.",
-        },
-        status=status.HTTP_401_UNAUTHORIZED,
-    )
-
-
-def success_response(token, data):
-    return Response(
-        {
-            "statusCode": status.HTTP_200_OK,
-            "success": True,
-            "message": "Operacion exitosa",
-            "token": {
-                "refresh": str(token),
-                "access": str(token.access_token),
-            },
-            "data": data,
-        },
-        status=status.HTTP_200_OK,
-    )
-
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField()
-    password = serializers.CharField()
-
-
-class TokenSerializer(serializers.Serializer):
-    access = serializers.CharField()
-    refresh = serializers.CharField()
-
-
-class ResponseApi(serializers.Serializer):
-    message = serializers.CharField()
-    statusCode = serializers.IntegerField()
-    token = TokenSerializer()
-    data = serializers.JSONField()
+from utils.http_response_structure import (
+    general_response,
+    invalid_credentials_response,
+    success_response,
+)
 
 
 @swagger_auto_schema(
     method="post",
     tags=["Autenticación"],
-    responses={200: ResponseApi},
+    operation_description="Endpoint para login de usuarios.",
+    responses={200: ResponseApiSerializer},
     request_body=LoginSerializer,
 )
 @api_view(["POST"])
@@ -99,7 +45,7 @@ def login(request):
 @swagger_auto_schema(
     method="post",
     tags=["Autenticación"],
-    responses={200: ResponseApi},
+    responses={200: ResponseApiSerializer},
     request_body=UserSerializer,
 )
 @api_view(["POST"])
@@ -123,10 +69,7 @@ def signup(request):
 
 
 @swagger_auto_schema(
-    method="get",
-    tags=["Autenticación"],
-    responses={200: ResponseApi},
-    security=[{"Bearer": []}],
+    method="get", tags=["Autenticación"], responses={200: ResponseApiSerializer}
 )
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
