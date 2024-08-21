@@ -1,7 +1,7 @@
 import os
 import requests
 from rest_framework import status
-from core.adapters import DataSource
+from app.adapters.adapters import DataSource
 from utils.http_response_structure import general_response
 
 
@@ -13,7 +13,7 @@ class ApiGoAnyWhereAdapter(DataSource):
             "$%PROCESO%$", proceso
         )
 
-    def fetch_data(self):
+    def obtener_vendedores(self):
         try:
             response_payload = requests.get(self.api_url, auth=self.auth)
             response_payload.raise_for_status()

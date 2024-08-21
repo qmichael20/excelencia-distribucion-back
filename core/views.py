@@ -1,9 +1,9 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions, status
 from drf_yasg.utils import swagger_auto_schema
+from app.adapters.adapters import DataSource
 from authentication.serializers import ResponseApiSerializer
-from core.adapters import DataSource
-from gaw.gaw_adapter import ApiGoAnyWhereAdapter
+from app.adapters.goanywhere_adapter import ApiGoAnyWhereAdapter
 from utils.http_response_structure import general_response
 from utils.utils import string_to_json
 
@@ -15,10 +15,10 @@ from utils.utils import string_to_json
     responses={200: ResponseApiSerializer},
 )
 @api_view(["GET"])
-@permission_classes([permissions.AllowAny])
+@permission_classes([permissions.IsAuthenticated])
 def obtener_vendedores_supervisor(request, codigo_supervisor):
     def process_data(data_source: DataSource):
-        return data_source.fetch_data()
+        return data_source.obtener_vendedores()
 
     try:
         headers = {"codigoSupervisor": codigo_supervisor}
