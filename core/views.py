@@ -1,11 +1,11 @@
-from rest_framework.decorators import api_view, permission_classes
+from requests import HTTPError
+from app.adapters.adapters import DataSource
 from rest_framework import permissions, status
 from drf_yasg.utils import swagger_auto_schema
-from app.adapters.adapters import DataSource
+from utils.http_response_structure import general_response
 from authentication.serializers import ResponseApiSerializer
 from app.adapters.goanywhere_adapter import ApiGoAnyWhereAdapter
-from utils.http_response_structure import general_response
-from utils.utils import string_to_json
+from rest_framework.decorators import api_view, permission_classes
 
 
 @swagger_auto_schema(
@@ -24,10 +24,12 @@ def obtener_vendedores_supervisor(request, codigo_supervisor):
         headers = {"codigoSupervisor": codigo_supervisor}
         api_adapter = ApiGoAnyWhereAdapter("busquedaVendedores", headers)
         data = process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+    except HTTPError:
         return general_response(
-            status.HTTP_200_OK, True, "Operación exitosa", string_to_json(data)
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
         )
     except Exception:
-        raise general_response(
+        return general_response(
             status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
         )

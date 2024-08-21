@@ -1,17 +1,14 @@
 import os
 import requests
-from rest_framework import status
+from utils.utils import string_to_json
 from app.adapters.adapters import DataSource
-from utils.http_response_structure import general_response
 
 
 class ApiGoAnyWhereAdapter(DataSource):
     def __init__(self, proceso: str, data: dict = None):
         self.data = data
         self.auth = (os.getenv("WEB_USER_GAW"), os.getenv("WEB_USER_PASS_GAW"))
-        self.api_url = os.getenv("URL_SECURITY_FORM_GAW").replace(
-            "$%PROCESO%$", proceso
-        )
+        self.api_url = os.getenv("URL_FORM_GAW").replace("$%PROCESO%$", proceso)
 
     def obtener_vendedores(self):
         try:
@@ -24,9 +21,11 @@ class ApiGoAnyWhereAdapter(DataSource):
                 response = requests.post(api_url_form, json=self.data, auth=self.auth)
                 response.raise_for_status()
                 response_json = response.json()
-                return response_json.get("data", {}).get("message", "")
+                data = response_json.get("data", {}).get("message", "")
+                if isinstance(data, str):
+                    return string_to_json(data)
 
-        except Exception:
-            raise general_response(
-                status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
-            )
+            raise requests.HTTPError
+
+        except requests.HTTPError:
+            raise requests.HTTPError

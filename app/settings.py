@@ -83,14 +83,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# JWT Configuration
-JWT_AUTH = {
-    "JWT_SECRET_KEY": SECRET_KEY,
-    "JWT_ALGORITHM": "HS256",
-    "JWT_ALLOW_REFRESH": True,
-    "JWT_EXPIRATION_DELTA": datetime.timedelta(minutes=30),
-}
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
