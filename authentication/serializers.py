@@ -14,22 +14,22 @@ class TokenSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
 
-class ResponseApiSerializer(serializers.Serializer):
-    message = serializers.CharField()
-    statusCode = serializers.IntegerField()
-    token = TokenSerializer()
-    data = serializers.JSONField()
-
-
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token["username"] = user.username
         token["email"] = user.email
-        token["codigoSupervisor"] = "mq"
+        token["codigoSupervisor"] = "004"
         token["tipoUsuario"] = "supervisor"
         return token
+
+
+class ResponseApiSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    statusCode = serializers.IntegerField()
+    token = TokenSerializer()
+    data = serializers.JSONField()
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -1,9 +1,23 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
+from typing import TypeVar, Optional
+
+T = TypeVar("T")
 
 
-def general_response(status, success, message, token=None, data=None):
+class Token:
+    def __init__(self, refresh: str, access: str):
+        self.refresh = refresh
+        self.access_token = access
+
+
+def general_response(
+    status: status,
+    success: bool,
+    message: str,
+    data: Optional[T] = None,
+    token: Optional[Token] = None,
+):
     response_data = {
         "statusCode": status,
         "success": success,

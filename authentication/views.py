@@ -62,8 +62,7 @@ def signup(request):
     return general_response(
         status.HTTP_400_BAD_REQUEST,
         False,
-        "Operacion fallida",
-        None,
+        "Ha ocurrido un error inesperado",
         user_serializer.errors,
     )
 
