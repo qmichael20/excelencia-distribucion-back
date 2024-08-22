@@ -83,7 +83,7 @@ def test_token(request):
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def refresh_token(request):
-    refresh_token = request.data.get("refresh")
+    refresh_token = request.headers.get("Refresh")
 
     if not refresh_token:
         return general_response(
