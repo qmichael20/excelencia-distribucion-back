@@ -1,5 +1,9 @@
 from django.urls import re_path
-from core.views import obtener_vendedores_supervisor, obtener_cuota_grabada_planeado
+from core.views import (
+    obtener_vendedores_supervisor,
+    obtener_cuota_grabada_planeado,
+    obtener_planeacion_vendedor_cliente,
+)
 
 urlpatterns = [
     re_path(
@@ -11,5 +15,10 @@ urlpatterns = [
         r"^cuota_grabada_planeado/(?P<codigo_vendedor>\w+)/$",
         obtener_cuota_grabada_planeado,
         name="obtener_cuota_grabada_planeado",
+    ),
+    re_path(
+        r"^planificacion_cliente_vendededor/(?P<codigo_vendedor>\w+)/$",
+        obtener_planeacion_vendedor_cliente,
+        name="planificacion_cliente_vendededor",
     ),
 ]

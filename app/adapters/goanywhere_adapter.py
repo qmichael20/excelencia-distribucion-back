@@ -15,6 +15,9 @@ class ApiGoAnyWhereAdapter(DataSource):
     def obtener_cuota_grabada_planeado(self):
         return consumir_formulario(self.proceso, self.data)
 
+    def obtener_planeacion_vendedor_cliente(self):
+        return consumir_formulario(self.proceso, self.data)
+
 
 def consumir_formulario(proceso: str, data: dict = None):
     auth = (os.getenv("WEB_USER_GAW"), os.getenv("WEB_USER_PASS_GAW"))

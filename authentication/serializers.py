@@ -20,7 +20,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token["username"] = user.username
         token["email"] = user.email
-        token["codigoSupervisor"] = "004"
+        token["codigoSupervisor"] = "001"
         token["tipoUsuario"] = "supervisor"
         return token
 
