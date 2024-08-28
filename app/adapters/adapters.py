@@ -13,3 +13,7 @@ class DataSource(ABC):
     @abstractmethod
     def obtener_planeacion_vendedor_cliente(self):
         pass
+
+    @abstractmethod
+    def guardar_planeacion_vendedor(self):
+        pass

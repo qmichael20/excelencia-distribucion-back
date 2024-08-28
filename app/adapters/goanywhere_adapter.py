@@ -5,7 +5,7 @@ from app.adapters.adapters import DataSource
 
 
 class ApiGoAnyWhereAdapter(DataSource):
-    def __init__(self, proceso: str, data: dict = None):
+    def __init__(self, proceso: str, data: dict | list = None):
         self.data = data
         self.proceso = proceso
 
@@ -17,6 +17,25 @@ class ApiGoAnyWhereAdapter(DataSource):
 
     def obtener_planeacion_vendedor_cliente(self):
         return consumir_formulario(self.proceso, self.data)
+
+    def guardar_planeacion_vendedor(self):
+        if isinstance(self.data, list):
+            for element in self.data:
+                if element["aprobado"] is True:
+                    body = {
+                        "codigoVendedor": element["vendedor"],
+                        "codigoCliente": element["codigoCliente"],
+                        "planeacion": str(element["planeacion"]),
+                        "aprobado": "true",
+                    }
+                    consumir_formulario(self.proceso, body)
+                else:
+                    body = {
+                        "codigoVendedor": element["vendedor"],
+                        "codigoCliente": element["codigoCliente"],
+                        "planeacion": str(element["planeacion"]),
+                    }
+                    consumir_formulario(self.proceso, body)
 
 
 def consumir_formulario(proceso: str, data: dict = None):

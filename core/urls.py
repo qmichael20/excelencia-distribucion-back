@@ -3,6 +3,7 @@ from core.views import (
     obtener_vendedores_supervisor,
     obtener_cuota_grabada_planeado,
     obtener_planeacion_vendedor_cliente,
+    guardar_planeacion_vendedor,
 )
 
 urlpatterns = [
@@ -20,5 +21,10 @@ urlpatterns = [
         r"^planificacion_cliente_vendededor/(?P<codigo_vendedor>\w+)/$",
         obtener_planeacion_vendedor_cliente,
         name="planificacion_cliente_vendededor",
+    ),
+    re_path(
+        "guardar_planeacion_vendedor/",
+        guardar_planeacion_vendedor,
+        name="guardar_planeacion_vendedor",
     ),
 ]
