@@ -21,21 +21,16 @@ class ApiGoAnyWhereAdapter(DataSource):
     def guardar_planeacion_vendedor(self):
         if isinstance(self.data, list):
             for element in self.data:
-                if element["aprobado"] is True:
-                    body = {
-                        "codigoVendedor": element["vendedor"],
-                        "codigoCliente": element["codigoCliente"],
-                        "planeacion": str(element["planeacion"]),
-                        "aprobado": "true",
-                    }
-                    consumir_formulario(self.proceso, body)
-                else:
-                    body = {
-                        "codigoVendedor": element["vendedor"],
-                        "codigoCliente": element["codigoCliente"],
-                        "planeacion": str(element["planeacion"]),
-                    }
-                    consumir_formulario(self.proceso, body)
+                body = {
+                    "codigoVendedor": element["vendedor"],
+                    "codigoCliente": element["codigoCliente"],
+                    "planeacion": str(element["planeacion"]),
+                }
+
+                if element.get("aprobado") is True:
+                    body["aprobado"] = "true"
+
+                consumir_formulario(self.proceso, body)
 
 
 def consumir_formulario(proceso: str, data: dict = None):
