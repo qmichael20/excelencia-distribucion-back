@@ -21,6 +21,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         token["email"] = user.email
         token["codigoSupervisor"] = "004"
+        # token["codigoVendedor"] = "n25"
         token["tipoUsuario"] = "supervisor"
         return token
 

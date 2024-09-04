@@ -18,13 +18,13 @@ urlpatterns = [
         name="obtener_cuota_grabada_planeado",
     ),
     re_path(
-        r"^planificacion_cliente_vendededor/(?P<codigo_vendedor>\w+)/$",
+        r"^obtener_planeacion_vendedor_cliente/(?P<codigo_vendedor>\w+)/$",
         obtener_planeacion_vendedor_cliente,
-        name="planificacion_cliente_vendededor",
+        name="obtener_planeacion_vendedor_cliente",
     ),
     re_path(
-        "guardar_planeacion_vendedor/",
+        "guardar_planeacion_vendedor_cliente/",
         guardar_planeacion_vendedor,
-        name="guardar_planeacion_vendedor",
+        name="guardar_planeacion_vendedor_cliente",
     ),
 ]
