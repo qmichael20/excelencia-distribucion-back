@@ -1,22 +1,21 @@
 import json
 from requests import HTTPError
 from app.adapters.adapters import DataSource
-from rest_framework import permissions, status
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from authentication.authentication import TokenValidate
 from utils.http_response_structure import general_response
-from authentication.serializers import ResponseApiSerializer
 from app.adapters.goanywhere_adapter import ApiGoAnyWhereAdapter
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, authentication_classes
 
 
-@swagger_auto_schema(
-    method="get",
-    tags=["Excelencia en Distribucion"],
-    operation_description="Endpoint para obtener los vendedores asignados a un supervisor.",
-    responses={status.HTTP_200_OK: ResponseApiSerializer},
-)
+# @swagger_auto_schema(
+#     method="get",
+#     tags=["Excelencia en Distribucion"],
+#     operation_description="Endpoint para obtener los vendedores asignados a un supervisor.",
+#     responses={status.HTTP_200_OK: ResponseApiSerializer},
+# )
 @api_view(["GET"])
-@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([TokenValidate])
 def obtener_vendedores_supervisor(request, codigo_supervisor):
     def process_data(data_source: DataSource):
         return data_source.obtener_vendedores()
@@ -36,14 +35,14 @@ def obtener_vendedores_supervisor(request, codigo_supervisor):
         )
 
 
-@swagger_auto_schema(
-    method="get",
-    tags=["Excelencia en Distribucion"],
-    operation_description="Endpoint para obtener la planeacion de un vendedor por clientes.",
-    responses={status.HTTP_200_OK: ResponseApiSerializer},
-)
+# @swagger_auto_schema(
+#     method="get",
+#     tags=["Excelencia en Distribucion"],
+#     operation_description="Endpoint para obtener la planeacion de un vendedor por clientes.",
+#     responses={status.HTTP_200_OK: ResponseApiSerializer},
+# )
 @api_view(["GET"])
-@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([TokenValidate])
 def obtener_planeacion_vendedor_cliente(request, codigo_vendedor):
     def process_data(data_source: DataSource):
         return data_source.obtener_planeacion_vendedor_cliente()
@@ -63,14 +62,14 @@ def obtener_planeacion_vendedor_cliente(request, codigo_vendedor):
         )
 
 
-@swagger_auto_schema(
-    method="get",
-    tags=["Excelencia en Distribucion"],
-    operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor.",
-    responses={status.HTTP_200_OK: ResponseApiSerializer},
-)
+# @swagger_auto_schema(
+#     method="get",
+#     tags=["Excelencia en Distribucion"],
+#     operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor.",
+#     responses={status.HTTP_200_OK: ResponseApiSerializer},
+# )
 @api_view(["GET"])
-@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([TokenValidate])
 def obtener_cuota_grabada_planeado(request, codigo_vendedor):
     def process_data(data_source: DataSource):
         return data_source.obtener_cuota_grabada_planeado()
@@ -90,14 +89,14 @@ def obtener_cuota_grabada_planeado(request, codigo_vendedor):
         )
 
 
-@swagger_auto_schema(
-    method="put",
-    tags=["Excelencia en Distribucion"],
-    operation_description="Endpoint para guardar la planeación del vendedor.",
-    responses={status.HTTP_201_CREATED: ResponseApiSerializer},
-)
+# @swagger_auto_schema(
+#     method="put",
+#     tags=["Excelencia en Distribucion"],
+#     operation_description="Endpoint para guardar la planeación del vendedor.",
+#     responses={status.HTTP_201_CREATED: ResponseApiSerializer},
+# )
 @api_view(["PUT"])
-@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([TokenValidate])
 def guardar_planeacion_vendedor(request):
     def process_data(data_source: DataSource):
         return data_source.guardar_planeacion_vendedor()

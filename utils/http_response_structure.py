@@ -26,8 +26,8 @@ def general_response(
 
     if token:
         response_data["token"] = {
-            "refresh": str(token),
-            "access": str(token.access_token),
+            "refresh": token.get("refresh"),
+            "access": token.get("access"),
         }
 
     if data is not None:
@@ -53,11 +53,11 @@ def success_response(token, data):
             "statusCode": status.HTTP_200_OK,
             "success": True,
             "message": "Operacion exitosa",
-            "token": {
-                "refresh": str(token),
-                "access": str(token.access_token),
-            },
             "data": data,
+            "token": {
+                "refresh": token.get("refresh"),
+                "access": token.get("access"),
+            },
         },
         status=status.HTTP_200_OK,
     )
