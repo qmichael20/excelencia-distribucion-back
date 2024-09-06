@@ -8,15 +8,3 @@ class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
         fields = ["vendedor"]
-
-
-class TokenSerializer(serializers.Serializer):
-    access = serializers.CharField()
-    refresh = serializers.CharField()
-
-
-class ResponseApiSerializer(serializers.Serializer):
-    message = serializers.CharField()
-    statusCode = serializers.IntegerField()
-    token = TokenSerializer()
-    data = serializers.JSONField()

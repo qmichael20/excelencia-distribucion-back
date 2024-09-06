@@ -12,7 +12,6 @@ schema_view = get_schema_view(
         license=openapi.License(name="Licencia"),
     ),
     public=True,
-    # permission_classes=(permissions.AllowAny,),
 )
 urlpatterns = [
     path("api/auth/", include("authentication.urls")),
