@@ -19,7 +19,7 @@ from drf_yasg.utils import swagger_auto_schema
 def autenticar_por_jwt(request):
     token = request.data.get("token")
     user_data = validar_jwt_msal(token)
-    if user_data:
+    if user_data is not None:
         tokens = generar_token(user_data)
         return success_response(tokens, user_data)
     return general_response(

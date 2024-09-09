@@ -13,7 +13,6 @@ class TokenValidate(BaseAuthentication):
             return None
 
         token = auth_header.replace("Bearer ", "")
-        print(token)
         secret = os.getenv("SECRET")
         algorithm = os.getenv("ALGORITHM_TOKEN")
 

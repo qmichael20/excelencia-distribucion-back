@@ -3,7 +3,6 @@ import jwt
 from django.utils import timezone
 from datetime import timedelta
 from typing import Optional, Dict, Any
-
 from utils.http_response_structure import success_response
 
 
@@ -31,7 +30,7 @@ def validar_jwt_msal(token: str) -> Optional[Dict[str, Any]]:
     except jwt.ExpiredSignatureError:
         raise jwt.ExpiredSignatureError
     except jwt.InvalidTokenError:
-        return jwt.InvalidTokenError
+        raise jwt.InvalidTokenError
 
 
 def generar_token(user_data: Dict[str, Any]) -> Dict[str, str]:
