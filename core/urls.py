@@ -1,9 +1,11 @@
 from django.urls import re_path
 from core.views import (
+    guardar_planeacion_vendedor_proveedor,
+    obtener_planeacion_vendedor_proveedor,
     obtener_vendedores_supervisor,
     obtener_cuota_grabada_planeado,
     obtener_planeacion_vendedor_cliente,
-    guardar_planeacion_vendedor,
+    guardar_planeacion_vendedor_cliente,
 )
 
 urlpatterns = [
@@ -24,7 +26,17 @@ urlpatterns = [
     ),
     re_path(
         "guardar_planeacion_vendedor_cliente/",
-        guardar_planeacion_vendedor,
+        guardar_planeacion_vendedor_cliente,
         name="guardar_planeacion_vendedor_cliente",
+    ),
+    re_path(
+        r"^obtener_planeacion_vendedor_proveedor/(?P<codigo_vendedor>\w+)/$",
+        obtener_planeacion_vendedor_proveedor,
+        name="obtener_planeacion_vendedor_proveedor",
+    ),
+    re_path(
+        "guardar_planeacion_vendedor_proveedor/",
+        guardar_planeacion_vendedor_proveedor,
+        name="guardar_planeacion_vendedor_proveedor",
     ),
 ]
