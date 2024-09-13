@@ -3,7 +3,8 @@ from core.views import (
     guardar_planeacion_vendedor_proveedor,
     obtener_planeacion_vendedor_proveedor,
     obtener_vendedores_supervisor,
-    obtener_cuota_grabada_planeado,
+    obtener_cuota_grabada_planeado_clientes,
+    obtener_cuota_grabada_planeado_proveedores,
     obtener_planeacion_vendedor_cliente,
     guardar_planeacion_vendedor_cliente,
 )
@@ -15,9 +16,9 @@ urlpatterns = [
         name="vendedores_por_supervisor",
     ),
     re_path(
-        r"^cuota_grabada_planeado/(?P<codigo_vendedor>\w+)/$",
-        obtener_cuota_grabada_planeado,
-        name="obtener_cuota_grabada_planeado",
+        r"^cuota_grabada_planeado_clientes/(?P<codigo_vendedor>\w+)/$",
+        obtener_cuota_grabada_planeado_clientes,
+        name="cuota_grabada_planeado_clientes",
     ),
     re_path(
         r"^obtener_planeacion_vendedor_cliente/(?P<codigo_vendedor>\w+)/$",
@@ -28,6 +29,11 @@ urlpatterns = [
         "guardar_planeacion_vendedor_cliente/",
         guardar_planeacion_vendedor_cliente,
         name="guardar_planeacion_vendedor_cliente",
+    ),
+    re_path(
+        r"^cuota_grabada_planeado_proveedores/(?P<codigo_vendedor>\w+)/$",
+        obtener_cuota_grabada_planeado_proveedores,
+        name="cuota_grabada_planeado_proveedores",
     ),
     re_path(
         r"^obtener_planeacion_vendedor_proveedor/(?P<codigo_vendedor>\w+)/$",

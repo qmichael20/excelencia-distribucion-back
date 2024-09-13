@@ -7,7 +7,7 @@ class DataSource(ABC):
         pass
 
     @abstractmethod
-    def obtener_cuota_grabada_planeado(self):
+    def obtener_cuota_grabada_planeado_clientes(self):
         pass
 
     @abstractmethod
@@ -16,6 +16,10 @@ class DataSource(ABC):
 
     @abstractmethod
     def guardar_planeacion_vendedor_cliente(self):
+        pass
+
+    @abstractmethod
+    def obtener_cuota_grabada_planeado_proveedores(self):
         pass
 
     @abstractmethod

@@ -12,7 +12,7 @@ class ApiGoAnyWhereAdapter(DataSource):
     def obtener_vendedores(self):
         return consumir_formulario(self.proceso, self.data)
 
-    def obtener_cuota_grabada_planeado(self):
+    def obtener_cuota_grabada_planeado_clientes(self):
         return consumir_formulario(self.proceso, self.data)
 
     def obtener_planeacion_vendedor_cliente(self):
@@ -32,6 +32,9 @@ class ApiGoAnyWhereAdapter(DataSource):
 
                 consumir_formulario(self.proceso, body)
 
+    def obtener_cuota_grabada_planeado_proveedores(self):
+        return consumir_formulario(self.proceso, self.data)
+
     def obtener_planeacion_vendedor_proveedor(self):
         return consumir_formulario(self.proceso, self.data)
 
@@ -47,6 +50,7 @@ class ApiGoAnyWhereAdapter(DataSource):
                 if element.get("aprobado") is True:
                     body["aprobado"] = "true"
 
+                print(body)
                 consumir_formulario(self.proceso, body)
 
 

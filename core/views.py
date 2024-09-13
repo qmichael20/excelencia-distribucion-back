@@ -40,18 +40,18 @@ def obtener_vendedores_supervisor(request, codigo_supervisor):
 @swagger_auto_schema(
     method="get",
     tags=["Excelencia en Distribucion"],
-    operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor.",
+    operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor por clientes.",
     responses={status.HTTP_200_OK: ResponseApiSerializer},
 )
 @api_view(["GET"])
 @authentication_classes([TokenValidate])
-def obtener_cuota_grabada_planeado(request, codigo_vendedor):
+def obtener_cuota_grabada_planeado_clientes(request, codigo_vendedor):
     def process_data(data_source: DataSource):
-        return data_source.obtener_cuota_grabada_planeado()
+        return data_source.obtener_cuota_grabada_planeado_clientes()
 
     try:
         body = {"codigoVendedor": codigo_vendedor}
-        api_adapter = ApiGoAnyWhereAdapter("busquedaCuotaGrabadaPlaneada", body)
+        api_adapter = ApiGoAnyWhereAdapter("busquedaCuotaGrabadaPlaneadaClientes", body)
         data = process_data(api_adapter)
         return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
     except HTTPError:
@@ -108,6 +108,35 @@ def guardar_planeacion_vendedor_cliente(request):
         api_adapter = ApiGoAnyWhereAdapter("guardar_planeacion_vendedor_cliente", body)
         process_data(api_adapter)
         return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+    except HTTPError:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+    except Exception:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+
+
+@swagger_auto_schema(
+    method="get",
+    tags=["Excelencia en Distribucion"],
+    operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor por proveedores.",
+    responses={status.HTTP_200_OK: ResponseApiSerializer},
+)
+@api_view(["GET"])
+@authentication_classes([TokenValidate])
+def obtener_cuota_grabada_planeado_proveedores(request, codigo_vendedor):
+    def process_data(data_source: DataSource):
+        return data_source.obtener_cuota_grabada_planeado_proveedores()
+
+    try:
+        body = {"codigoVendedor": codigo_vendedor}
+        api_adapter = ApiGoAnyWhereAdapter(
+            "busquedaCuotaGrabadaPlaneadaProveedores", body
+        )
+        data = process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
     except HTTPError:
         return general_response(
             status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
