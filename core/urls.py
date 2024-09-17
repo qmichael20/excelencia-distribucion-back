@@ -7,6 +7,8 @@ from core.views import (
     obtener_cuota_grabada_planeado_proveedores,
     obtener_planeacion_vendedor_cliente,
     guardar_planeacion_vendedor_cliente,
+    obtener_resumen_planeacion_clientes,
+    obtener_resumen_planeacion_proveedores,
 )
 
 urlpatterns = [
@@ -44,5 +46,15 @@ urlpatterns = [
         "guardar_planeacion_vendedor_proveedor/",
         guardar_planeacion_vendedor_proveedor,
         name="guardar_planeacion_vendedor_proveedor",
+    ),
+    re_path(
+        r"^obtener_resumen_planeacion_clientes/(?P<codigo_supervisor>\w+)/$",
+        obtener_resumen_planeacion_clientes,
+        name="obtener_resumen_planeacion_clientes",
+    ),
+    re_path(
+        r"^obtener_resumen_planeacion_proveedores/(?P<codigo_supervisor>\w+)/$",
+        obtener_resumen_planeacion_proveedores,
+        name="obtener_resumen_planeacion_proveedores",
     ),
 ]

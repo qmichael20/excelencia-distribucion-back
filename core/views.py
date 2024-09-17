@@ -201,3 +201,57 @@ def guardar_planeacion_vendedor_proveedor(request):
         return general_response(
             status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
         )
+
+
+@swagger_auto_schema(
+    method="get",
+    tags=["Excelencia en Distribucion"],
+    operation_description="Endpoint para obtener el resumen de la planeacion por clientes.",
+    responses={status.HTTP_200_OK: ResponseApiSerializer},
+)
+@api_view(["GET"])
+@authentication_classes([TokenValidate])
+def obtener_resumen_planeacion_clientes(request, codigo_supervisor):
+    def process_data(data_source: DataSource):
+        return data_source.obtener_resumen_planeacion_clientes()
+
+    try:
+        body = {"codigoSupervisor": codigo_supervisor}
+        api_adapter = ApiGoAnyWhereAdapter("resumen_planeacion_clientes", body)
+        data = process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+    except HTTPError:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+    except Exception:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+
+
+@swagger_auto_schema(
+    method="get",
+    tags=["Excelencia en Distribucion"],
+    operation_description="Endpoint para obtener el resumen de la planeacion por proveedores.",
+    responses={status.HTTP_200_OK: ResponseApiSerializer},
+)
+@api_view(["GET"])
+@authentication_classes([TokenValidate])
+def obtener_resumen_planeacion_proveedores(request, codigo_supervisor):
+    def process_data(data_source: DataSource):
+        return data_source.obtener_resumen_planeacion_clientes()
+
+    try:
+        body = {"codigoSupervisor": codigo_supervisor}
+        api_adapter = ApiGoAnyWhereAdapter("resumen_planeacion_proveedores", body)
+        data = process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+    except HTTPError:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+    except Exception:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )

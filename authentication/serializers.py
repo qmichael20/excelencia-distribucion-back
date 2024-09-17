@@ -22,8 +22,8 @@ class TokenSerializer(serializers.Serializer):
 class ResponseApiSerializer(serializers.Serializer):
     message = serializers.CharField()
     statusCode = serializers.IntegerField()
-    token = TokenSerializer()
     data = serializers.JSONField()
+    token = TokenSerializer(required=False)
 
 
 class RefreshTokenSerializer(serializers.Serializer):

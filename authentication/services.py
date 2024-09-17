@@ -41,9 +41,9 @@ def generar_token(user_data: Dict[str, Any]) -> Dict[str, str]:
         "user_name": user_data.get("user_name"),
         "email": user_data.get("email"),
         "display_name": user_data.get("display_name"),
-        "tipoUsuario": "vendedor",
-        # "codigoSupervisor": "004",
-        "codigoVendedor": "N21",
+        "tipoUsuario": "supervisor",
+        "codigoSupervisor": "004",
+        # "codigoVendedor": "N21",
         "exp": timezone.now()
         + timedelta(hours=int(os.getenv("ACCESS_TOKEN_EXPIRATION"))),
     }
@@ -54,9 +54,9 @@ def generar_token(user_data: Dict[str, Any]) -> Dict[str, str]:
         "user_name": user_data.get("user_name"),
         "email": user_data.get("email"),
         "display_name": user_data.get("display_name"),
-        "tipoUsuario": "vendedor",
-        # "codigoSupervisor": "004",
-        "codigoVendedor": "N21",
+        "tipoUsuario": "supervisor",
+        "codigoSupervisor": "004",
+        # "codigoVendedor": "N21",
         "exp": timezone.now()
         + timedelta(days=int(os.getenv("REFRESH_TOKEN_EXPIRATION"))),
     }
