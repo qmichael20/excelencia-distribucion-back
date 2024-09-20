@@ -50,8 +50,13 @@ class ApiGoAnyWhereAdapter(DataSource):
                 if element.get("aprobado") is True:
                     body["aprobado"] = "true"
 
-                print(body)
                 consumir_formulario(self.proceso, body)
+
+    def obtener_resumen_planeacion_clientes(self):
+        return consumir_formulario(self.proceso, self.data)
+
+    def obtener_resumen_planeacion_proveedores(self):
+        return consumir_formulario(self.proceso, self.data)
 
 
 def consumir_formulario(proceso: str, data: dict = None):
@@ -76,11 +81,3 @@ def consumir_formulario(proceso: str, data: dict = None):
 
     except requests.HTTPError:
         raise requests.HTTPError
-
-
-def obtener_resumen_planeacion_clientes(self):
-    return consumir_formulario(self.proceso, self.data)
-
-
-def obtener_resumen_planeacion_proveedores(self):
-    return consumir_formulario(self.proceso, self.data)

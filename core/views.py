@@ -240,7 +240,7 @@ def obtener_resumen_planeacion_clientes(request, codigo_supervisor):
 @authentication_classes([TokenValidate])
 def obtener_resumen_planeacion_proveedores(request, codigo_supervisor):
     def process_data(data_source: DataSource):
-        return data_source.obtener_resumen_planeacion_clientes()
+        return data_source.obtener_resumen_planeacion_proveedores()
 
     try:
         body = {"codigoSupervisor": codigo_supervisor}
