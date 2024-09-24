@@ -31,6 +31,10 @@ class DataSource(ABC):
         pass
 
     @abstractmethod
+    def aprobar_planeacion_vendedor(self):
+        pass
+
+    @abstractmethod
     def obtener_resumen_planeacion_clientes(self):
         pass
 

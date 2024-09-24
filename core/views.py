@@ -119,6 +119,38 @@ def guardar_planeacion_vendedor_cliente(request):
 
 
 @swagger_auto_schema(
+    method="put",
+    tags=["Excelencia en Distribucion"],
+    operation_description="Endpoint para aprobar la planeación del vendedor.",
+    responses={status.HTTP_201_CREATED: ResponseApiSerializer},
+)
+@api_view(["PUT"])
+@authentication_classes([TokenValidate])
+def aprobar_planeacion_vendedor_cliente(request, codigo_vendedor):
+    def process_data(data_source: DataSource):
+        return data_source.aprobar_planeacion_vendedor()
+
+    try:
+        body = {
+            "codigoVendedor": codigo_vendedor,
+            "proceso_auxiliar": "guardar_planeacion_vendedor_cliente",
+            "data": json.loads(request.body.decode("utf-8")),
+        }
+
+        api_adapter = ApiGoAnyWhereAdapter("aprobar_planeacion_vendedor_cliente", body)
+        process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+    except HTTPError:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+    except Exception:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+
+
+@swagger_auto_schema(
     method="get",
     tags=["Excelencia en Distribucion"],
     operation_description="Endpoint para obtener la cuota grabada y el total planeado de un vendedor por proveedores.",
@@ -190,6 +222,40 @@ def guardar_planeacion_vendedor_proveedor(request):
         body = json.loads(request.body.decode("utf-8"))
         api_adapter = ApiGoAnyWhereAdapter(
             "guardar_planeacion_vendedor_proveedor", body
+        )
+        process_data(api_adapter)
+        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+    except HTTPError:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+    except Exception:
+        return general_response(
+            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+        )
+
+
+@swagger_auto_schema(
+    method="put",
+    tags=["Excelencia en Distribucion"],
+    operation_description="Endpoint para aprobar la planeación del vendedor.",
+    responses={status.HTTP_201_CREATED: ResponseApiSerializer},
+)
+@api_view(["PUT"])
+@authentication_classes([TokenValidate])
+def aprobar_planeacion_vendedor_proveedor(request, codigo_vendedor):
+    def process_data(data_source: DataSource):
+        return data_source.aprobar_planeacion_vendedor()
+
+    try:
+        body = {
+            "codigoVendedor": codigo_vendedor,
+            "proceso_auxiliar": "guardar_planeacion_vendedor_proveedor",
+            "data": json.loads(request.body.decode("utf-8")),
+        }
+
+        api_adapter = ApiGoAnyWhereAdapter(
+            "aprobar_planeacion_vendedor_proveedor", body
         )
         process_data(api_adapter)
         return general_response(status.HTTP_200_OK, True, "Operación exitosa")

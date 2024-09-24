@@ -27,9 +27,6 @@ class ApiGoAnyWhereAdapter(DataSource):
                     "planeacion": str(element["planeacion"]),
                 }
 
-                if element.get("aprobado") is True:
-                    body["aprobado"] = "true"
-
                 consumir_formulario(self.proceso, body)
 
     def obtener_cuota_grabada_planeado_proveedores(self):
@@ -47,10 +44,22 @@ class ApiGoAnyWhereAdapter(DataSource):
                     "planeacion": str(element["planeacion"]),
                 }
 
-                if element.get("aprobado") is True:
-                    body["aprobado"] = "true"
-
                 consumir_formulario(self.proceso, body)
+
+    def aprobar_planeacion_vendedor(self):
+        if isinstance(self.data["data"], list):
+            for element in self.data["data"]:
+                body = {
+                    "codigoVendedor": element["vendedor"],
+                    "codigoCliente": element["codigoCliente"],
+                    "planeacion": str(element["planeacion"]),
+                }
+
+                consumir_formulario(self.data["proceso_auxiliar"], body)
+
+        return consumir_formulario(
+            self.proceso, {"codigoVendedor": self.data["codigoVendedor"]}
+        )
 
     def obtener_resumen_planeacion_clientes(self):
         return consumir_formulario(self.proceso, self.data)

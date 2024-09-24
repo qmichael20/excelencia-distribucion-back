@@ -1,4 +1,5 @@
 import jwt
+import requests
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from authentication.authentication import AllowAnonymous

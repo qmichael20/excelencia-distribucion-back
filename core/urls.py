@@ -1,12 +1,14 @@
 from django.urls import re_path
 from core.views import (
     guardar_planeacion_vendedor_proveedor,
+    aprobar_planeacion_vendedor_proveedor,
     obtener_planeacion_vendedor_proveedor,
     obtener_vendedores_supervisor,
     obtener_cuota_grabada_planeado_clientes,
     obtener_cuota_grabada_planeado_proveedores,
     obtener_planeacion_vendedor_cliente,
     guardar_planeacion_vendedor_cliente,
+    aprobar_planeacion_vendedor_cliente,
     obtener_resumen_planeacion_clientes,
     obtener_resumen_planeacion_proveedores,
 )
@@ -33,6 +35,11 @@ urlpatterns = [
         name="guardar_planeacion_vendedor_cliente",
     ),
     re_path(
+        r"^aprobar_planeacion_vendedor_cliente/(?P<codigo_vendedor>\w+)/$",
+        aprobar_planeacion_vendedor_cliente,
+        name="aprobar_planeacion_vendedor_cliente",
+    ),
+    re_path(
         r"^cuota_grabada_planeado_proveedores/(?P<codigo_vendedor>\w+)/$",
         obtener_cuota_grabada_planeado_proveedores,
         name="cuota_grabada_planeado_proveedores",
@@ -46,6 +53,11 @@ urlpatterns = [
         "guardar_planeacion_vendedor_proveedor/",
         guardar_planeacion_vendedor_proveedor,
         name="guardar_planeacion_vendedor_proveedor",
+    ),
+    re_path(
+        r"^aprobar_planeacion_vendedor_proveedor/(?P<codigo_vendedor>\w+)/$",
+        aprobar_planeacion_vendedor_proveedor,
+        name="aprobar_planeacion_vendedor_proveedor",
     ),
     re_path(
         r"^obtener_resumen_planeacion_clientes/(?P<codigo_supervisor>\w+)/$",
