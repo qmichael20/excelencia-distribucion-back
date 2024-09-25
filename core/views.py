@@ -263,7 +263,8 @@ def aprobar_planeacion_vendedor_proveedor(request, codigo_vendedor):
         return general_response(
             status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
         )
-    except Exception:
+    except Exception as e:
+        print(e)
         return general_response(
             status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
         )
