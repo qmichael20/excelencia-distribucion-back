@@ -12,42 +12,61 @@ class ApiGoAnyWhereAdapter(DataSource):
     def obtener_vendedores(self):
         return consumir_formulario(self.proceso, self.data)
 
-    def obtener_cuota_grabada_planeado(self):
+    def obtener_cuota_grabada_planeado_clientes(self):
         return consumir_formulario(self.proceso, self.data)
 
     def obtener_planeacion_vendedor_cliente(self):
         return consumir_formulario(self.proceso, self.data)
 
     def guardar_planeacion_vendedor_cliente(self):
-        if isinstance(self.data, list):
-            for element in self.data:
-                body = {
-                    "codigoVendedor": element["vendedor"],
-                    "codigoCliente": element["codigoCliente"],
-                    "planeacion": str(element["planeacion"]),
-                }
+        guardar_planeacion_vendedor(self)
 
-                if element.get("aprobado") is True:
-                    body["aprobado"] = "true"
-
-                consumir_formulario(self.proceso, body)
+    def obtener_cuota_grabada_planeado_proveedores(self):
+        return consumir_formulario(self.proceso, self.data)
 
     def obtener_planeacion_vendedor_proveedor(self):
         return consumir_formulario(self.proceso, self.data)
 
     def guardar_planeacion_vendedor_proveedor(self):
-        if isinstance(self.data, list):
-            for element in self.data:
-                body = {
-                    "codigoVendedor": element["vendedor"],
-                    "codigoProveedor": element["codigoProveedor"],
-                    "planeacion": str(element["planeacion"]),
-                }
+        guardar_planeacion_vendedor(self)
 
-                if element.get("aprobado") is True:
-                    body["aprobado"] = "true"
+    def aprobar_planeacion_vendedor(self):
+        if isinstance(self.data["data"], list):
+            for element in self.data["data"]:
+                body = armar_body(self.proceso, element)
+                consumir_formulario(self.data["proceso_auxiliar"], body)
 
-                consumir_formulario(self.proceso, body)
+        return consumir_formulario(
+            self.proceso, {"codigoVendedor": self.data["codigoVendedor"]}
+        )
+
+    def obtener_resumen_planeacion_clientes(self):
+        return consumir_formulario(self.proceso, self.data)
+
+    def obtener_resumen_planeacion_proveedores(self):
+        return consumir_formulario(self.proceso, self.data)
+
+
+def guardar_planeacion_vendedor(self):
+    if isinstance(self.data, list):
+        for element in self.data:
+            body = armar_body(self.proceso, element)
+            consumir_formulario(self.proceso, body)
+
+
+def armar_body(proceso: str, data: dict):
+    if "proveedor" in proceso:
+        return {
+            "codigoVendedor": data["vendedor"],
+            "codigoProveedor": data["codigoProveedor"],
+            "planeacion": str(data["planeacion"]),
+        }
+    else:
+        return {
+            "codigoVendedor": data["vendedor"],
+            "codigoCliente": data["codigoCliente"],
+            "planeacion": str(data["planeacion"]),
+        }
 
 
 def consumir_formulario(proceso: str, data: dict = None):

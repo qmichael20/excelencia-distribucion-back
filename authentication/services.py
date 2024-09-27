@@ -1,7 +1,7 @@
 import os
 import jwt
-from django.utils import timezone
 from datetime import timedelta
+from django.utils import timezone
 from typing import Optional, Dict, Any
 from utils.http_response_structure import success_response
 
@@ -15,6 +15,7 @@ def obtener_llave_publica_msal(token: str) -> Dict[str, Any]:
 def validar_jwt_msal(token: str) -> Optional[Dict[str, Any]]:
     try:
         public_key = obtener_llave_publica_msal(token)
+
         decoded_token = jwt.decode(
             token,
             public_key,
@@ -42,7 +43,9 @@ def generar_token(user_data: Dict[str, Any]) -> Dict[str, str]:
         "email": user_data.get("email"),
         "display_name": user_data.get("display_name"),
         "tipoUsuario": "supervisor",
-        "codigoSupervisor": "004",
+        "codigoSupervisor": "020",
+        # "codigoVendedor": "Q60",
+        # "tipoUsuario": "vendedor",
         "exp": timezone.now()
         + timedelta(hours=int(os.getenv("ACCESS_TOKEN_EXPIRATION"))),
     }
@@ -54,7 +57,9 @@ def generar_token(user_data: Dict[str, Any]) -> Dict[str, str]:
         "email": user_data.get("email"),
         "display_name": user_data.get("display_name"),
         "tipoUsuario": "supervisor",
-        "codigoSupervisor": "004",
+        "codigoSupervisor": "020",
+        # "codigoVendedor": "Q60",
+        # "tipoUsuario": "vendedor",
         "exp": timezone.now()
         + timedelta(days=int(os.getenv("REFRESH_TOKEN_EXPIRATION"))),
     }

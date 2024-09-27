@@ -1,4 +1,5 @@
 import jwt
+import requests
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from authentication.authentication import AllowAnonymous
@@ -18,15 +19,28 @@ from drf_yasg.utils import swagger_auto_schema
 @permission_classes([AllowAnonymous])
 def autenticar_por_jwt(request):
     token = request.data.get("token")
-    user_data = validar_jwt_msal(token)
-    if user_data is not None:
-        tokens = generar_token(user_data)
-        return success_response(tokens, user_data)
-    return general_response(
-        status.HTTP_401_UNAUTHORIZED,
-        False,
-        "El token proporcionado es inválido.",
-    )
+    try:
+        user_data = validar_jwt_msal(token)
+        if user_data is not None:
+            tokens = generar_token(user_data)
+            return success_response(tokens, user_data)
+        return general_response(
+            status.HTTP_401_UNAUTHORIZED,
+            False,
+            "El token proporcionado es inválido.",
+        )
+    except jwt.ExpiredSignatureError:
+        return general_response(
+            status.HTTP_401_UNAUTHORIZED,
+            False,
+            "El token proporcionado es inválido.",
+        )
+    except jwt.InvalidTokenError:
+        return general_response(
+            status.HTTP_401_UNAUTHORIZED,
+            False,
+            "El token proporcionado es inválido.",
+        )
 
 
 @swagger_auto_schema(
