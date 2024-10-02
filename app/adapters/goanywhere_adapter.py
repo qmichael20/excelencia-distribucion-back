@@ -9,6 +9,12 @@ class ApiGoAnyWhereAdapter(DataSource):
         self.data = data
         self.proceso = proceso
 
+    def obtener_codigo_supervisor_por_correo(self):
+        return consumir_formulario(self.proceso, self.data)
+
+    def obtener_codigo_vendedor_por_credenciales(self):
+        return consumir_formulario(self.proceso, self.data)
+
     def obtener_vendedores(self):
         return consumir_formulario(self.proceso, self.data)
 

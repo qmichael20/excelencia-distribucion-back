@@ -3,6 +3,14 @@ from abc import ABC, abstractmethod
 
 class DataSource(ABC):
     @abstractmethod
+    def obtener_codigo_supervisor_por_correo(self):
+        pass
+
+    @abstractmethod
+    def obtener_codigo_vendedor_por_credenciales(self):
+        pass
+
+    @abstractmethod
     def obtener_vendedores(self):
         pass
 

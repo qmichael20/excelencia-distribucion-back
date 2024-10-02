@@ -2,6 +2,7 @@ import json
 from requests import HTTPError
 from app.adapters.adapters import DataSource
 from rest_framework import status
+from app.enum.mensajes import Mensajes
 from authentication.authentication import TokenValidate
 from authentication.serializers import ResponseApiSerializer
 from utils.http_response_structure import general_response
@@ -26,14 +27,16 @@ def obtener_vendedores_supervisor(request, codigo_supervisor):
         body = {"codigoSupervisor": codigo_supervisor}
         api_adapter = ApiGoAnyWhereAdapter("busquedaVendedores", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -53,14 +56,16 @@ def obtener_cuota_grabada_planeado_clientes(request, codigo_vendedor):
         body = {"codigoVendedor": codigo_vendedor}
         api_adapter = ApiGoAnyWhereAdapter("busquedaCuotaGrabadaPlaneadaClientes", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -80,14 +85,16 @@ def obtener_planeacion_vendedor_cliente(request, codigo_vendedor):
         body = {"codigoVendedor": codigo_vendedor}
         api_adapter = ApiGoAnyWhereAdapter("planeacion_cliente_vendededor", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -107,14 +114,16 @@ def guardar_planeacion_vendedor_cliente(request):
         body = json.loads(request.body.decode("utf-8"))
         api_adapter = ApiGoAnyWhereAdapter("guardar_planeacion_vendedor_cliente", body)
         process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -139,14 +148,16 @@ def aprobar_planeacion_vendedor_cliente(request, codigo_vendedor):
 
         api_adapter = ApiGoAnyWhereAdapter("aprobar_planeacion_vendedor_cliente", body)
         process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -168,14 +179,16 @@ def obtener_cuota_grabada_planeado_proveedores(request, codigo_vendedor):
             "busquedaCuotaGrabadaPlaneadaProveedores", body
         )
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -195,14 +208,16 @@ def obtener_planeacion_vendedor_proveedor(request, codigo_vendedor):
         body = {"codigoVendedor": codigo_vendedor}
         api_adapter = ApiGoAnyWhereAdapter("planeacion_cliente_proveedor", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -224,14 +239,16 @@ def guardar_planeacion_vendedor_proveedor(request):
             "guardar_planeacion_vendedor_proveedor", body
         )
         process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -258,14 +275,16 @@ def aprobar_planeacion_vendedor_proveedor(request, codigo_vendedor):
             "aprobar_planeacion_vendedor_proveedor", body
         )
         process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa")
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -285,14 +304,16 @@ def obtener_resumen_planeacion_clientes(request, codigo_supervisor):
         body = {"codigoSupervisor": codigo_supervisor}
         api_adapter = ApiGoAnyWhereAdapter("resumen_planeacion_clientes", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
 
 
@@ -312,12 +333,14 @@ def obtener_resumen_planeacion_proveedores(request, codigo_supervisor):
         body = {"codigoSupervisor": codigo_supervisor}
         api_adapter = ApiGoAnyWhereAdapter("resumen_planeacion_proveedores", body)
         data = process_data(api_adapter)
-        return general_response(status.HTTP_200_OK, True, "Operación exitosa", data)
+        return general_response(
+            status.HTTP_200_OK, True, Mensajes.OPERACION_EXITOSA.value, data
+        )
     except HTTPError:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
     except Exception:
         return general_response(
-            status.HTTP_400_BAD_REQUEST, False, "Ha ocurrido un error inesperado"
+            status.HTTP_400_BAD_REQUEST, False, Mensajes.ERROR_INESPERADO.value
         )
